@@ -1,0 +1,72 @@
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Scanner;
+
+
+public abstract class QualifiedDoctor extends Doctor {
+	private boolean qualifiedInIreland;
+	 ArrayList<Complaint> complaints = new ArrayList<Complaint>();
+		private Scanner input;
+
+	public QualifiedDoctor(String name, Calendar dateOfBirth, boolean male, String address, double registrationFees, 
+			int phoneNumber, boolean qualifiedInIreland, ArrayList<Complaint> complaints)
+	{
+		super(name, dateOfBirth, male, address, registrationFees, phoneNumber);
+		
+		this.qualifiedInIreland=qualifiedInIreland;
+		complaints = new ArrayList<Complaint>();
+		input = new Scanner(System.in);
+	}
+
+	public boolean getQualifiedInIreland() {
+		return qualifiedInIreland;
+	}
+
+	public void setQualifiedInIreland(boolean qualifiedInIreland) {
+		this.qualifiedInIreland = qualifiedInIreland;
+	}
+	
+	
+	public void addComplaint(Complaint complaint){
+		String startingComplaint = "Open";
+		 Calendar c = new GregorianCalendar(); // Reference: http://stackoverflow.com/questions/9629636/get-todays-date-in-java
+		    Date date = c.getTime();
+		    int i = 1;
+		    complaint = new Complaint(i, date, startingComplaint);
+		    complaints.add(complaint);
+	}
+	
+	public void updateComplaintStatus(Complaint complaint, String status){
+		//TODO
+		System.out.println("What do you want to update the ComplaintStatus to?");
+		System.out.println("---------");    
+		System.out.println("  1) Upheld");
+		System.out.println("   2)  Rejected");
+		System.out.println("   0) Exit");
+		int option = input.nextInt();
+		
+		if (option == 1){
+			status = "Upheld";
+			complaint.setResultOfComplaint(status);
+		}
+		else if(option == 2){
+			status = "Rejected";
+			complaint.setResultOfComplaint(status);
+		}
+		else{
+			System.out.println("Invalid input");
+		}
+	}
+	
+	public void sortComplaints(){
+		//TODO
+		
+	}
+	
+	public	int	searchForComplaint(int id){
+		//TODO
+		return 0;
+	}
+}
