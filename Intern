@@ -1,0 +1,25 @@
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+
+public class Specialist extends QualifiedDoctor{
+
+	
+	public Specialist(String name, Calendar dateOfBirth, boolean male, String address, double registrationFees, int phoneNumber, 
+			boolean qualifiedInIreland, ArrayList<Complaint> complaints){
+		super(name, dateOfBirth, male, address, registrationFees, phoneNumber, qualifiedInIreland, complaints);
+	}
+
+	public double calculateRegistrationFee() {
+		if (getQualifiedInIreland() == true){
+			setRegistrationFees(425);
+			return 425;
+		}
+		else{
+			setRegistrationFees(641);
+			return 641;
+		}
+	}
+}
+	
