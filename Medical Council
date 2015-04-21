@@ -1,0 +1,402 @@
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Scanner;
+
+
+public class MedicalCouncil {
+
+
+	private Scanner input;
+	ArrayList<Doctor> doctors = new ArrayList<Doctor>();
+	private int doctorNumber;
+	
+	public MedicalCouncil()
+	{
+		input = new Scanner(System.in);
+		run();
+	}
+
+	public static void main(String[] argvs){
+		MedicalCouncil medicalCouncil = new MedicalCouncil();
+	}
+		
+	private void run()  
+	{
+		//TODO
+		int option = mainMenu();
+		while (option != 0)
+		{
+
+			switch (option)
+			{
+			case 1:    		doctorSetup();
+			break;
+			case 2:         deleteDoctor();
+			                doctors.remove(doctorNumber);
+			break;			
+			case 3:     	edit();				
+			break;
+			case 4:         System.out.println(totalRegistrationOwed());
+			break;
+			case 5:         System.out.println(totalInternRegistrationOwed());
+			break;
+			case 6:	        System.out.println(allDoctors());
+			break;
+			case 7:          // Average	
+			break;
+			case 8:    
+			default:       System.out.println("Invalid option entered: " + option);
+			break;
+			}
+
+			System.out.println("\nPress any key to continue...");
+			input.nextLine();
+			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+
+			//clear the terminal window and display the main menu again
+			System.out.println("\f");
+			option = mainMenu();
+		}   
+		System.out.println("Exiting... bye");
+		System.exit(0);
+	}
+
+	
+	private int mainMenu()     
+	{ 
+		System.out.println("Medical Council Menu");
+		System.out.println("---------");     
+		System.out.println("  1) Add a Doctor");    
+		System.out.println("  2) Delete a Doctor");        
+		System.out.println("  3) Edit Details"); 
+		System.out.println("  4) Total Registration that is owed"); 
+		System.out.println("  5) Total Intern Registration fees that are owed");  
+		System.out.println("  6) List all the doctors "); 
+		System.out.println("  7) The Average of what's owed");
+		System.out.println("  8) Add a complaint");
+		System.out.println("  0) Exit");
+		System.out.print("==>> ");
+		int option = input.nextInt();
+		return option;	
+	}
+	
+     private int editMenu(){
+		{
+			{
+		        		System.out.println("Which details would you like to change: ");
+		        		System.out.println("Edit Details Menu");
+		        		System.out.println("---------");     
+		        		System.out.println("  1) Edit Name");    
+		        		System.out.println("  2) Edit Date of Birth");        
+		        		System.out.println("  3) Edit Gender"); 
+		        		System.out.println("  4) Edit Address"); 
+		        		System.out.println("  5) Edit Phone Number");  
+		        		System.out.println("  6) Go back to Main Menu"); 
+		        		System.out.print("==>> ");
+		        		int option = input.nextInt();
+		        		return option;	
+		        	}	
+			 }
+     }
+     
+     private void edit(){
+   	     System.out.println("What is the doctors name that you would like to edit: ");
+		 String name = input.next();
+    	 if (searchForDoctor(name) != -1){
+    	 int option = editMenu(); 
+ 		 while (option != 0){
+ 			switch (option)
+			{
+			case 1:    	System.out.println("Enter the name you wish to change to: ");
+						String newName = input.next();
+						doctors.get(searchForDoctor(name)).setName(newName);
+			break;
+			case 2:     System.out.println("Please select your birth month: ");
+						System.out.println("---------");    
+						System.out.println("  1) January");
+						System.out.println("  2) February");
+						System.out.println("  3) March");
+						System.out.println("  4) April");
+						System.out.println("  5) May");
+						System.out.println("  6) June");
+						System.out.println("  7) July");
+						System.out.println("  8) August");
+						System.out.println("  9) September");
+						System.out.println(" 10) October");
+						System.out.println(" 11) November");
+						System.out.println(" 12) December");
+						System.out.println("  0) Exit");
+						int month = input.nextInt();
+			
+						System.out.println("Please enter the day you were born: ");
+						int day = input.nextInt();
+			
+						System.out.println("Please enter the year you were born: ");
+						int year = input.nextInt();
+			
+						Calendar cal = new GregorianCalendar(year, month - 1, day);    
+						doctors.get(searchForDoctor(name)).setDateOfBirth(cal);
+			break;			
+			case 3:     System.out.println("Are you male y/n: ");
+						String a = input.nextLine().trim().toLowerCase();
+						if (a.toLowerCase().equals("y"))
+						{
+							doctors.get(searchForDoctor(name)).setMaleOrFemale(true);
+						}
+						else{
+							doctors.get(searchForDoctor(name)).setMaleOrFemale(false);
+						}
+			break;
+			case 4:   System.out.println("What is the new Address that you would like: ");
+					  String address = input.next();
+					  doctors.get(searchForDoctor(name)).setAddress(address);
+			break;
+			case 5:   System.out.println("What is the new phone number that you would like: ");
+			          int phoneNumber = input.nextInt();
+			          doctors.get(searchForDoctor(name)).setPhoneNumber(phoneNumber);
+			break;
+			case 6:     run();
+			break;
+			default:    System.out.println("Invalid option entered: " + option);
+			break;
+			}
+ 			System.out.println("\nPress any key to continue...");
+			input.nextLine();
+			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+
+			//clear the terminal window and display the main menu again
+			System.out.println("\f");
+			option = editMenu();
+		}   
+		System.out.println("Exiting... bye");
+		System.exit(0);
+ 		}
+    	else{
+    		System.out.println("Doctor not found!");
+    	}
+		 }
+	
+	private void doctorSetup(){
+		System.out.println("Please enter your name: ");
+		String name = input.next();
+		
+		System.out.println("Please select your birth month: ");
+		System.out.println("---------");    
+		System.out.println("  1) January");
+		System.out.println("  2) February");
+		System.out.println("  3) March");
+		System.out.println("  4) April");
+		System.out.println("  5) May");
+		System.out.println("  6) June");
+		System.out.println("  7) July");
+		System.out.println("  8) August");
+		System.out.println("  9) September");
+		System.out.println(" 10) October");
+		System.out.println(" 11) November");
+		System.out.println(" 12) December");
+		System.out.println("  0) Exit");
+		int month = input.nextInt();
+		
+		System.out.println("Please enter the day you were born: ");
+		int day = input.nextInt();
+		
+		System.out.println("Please enter the year you were born: ");
+		int year = input.nextInt();
+		
+		Calendar cal = new GregorianCalendar(year, month - 1, day);
+		   
+		    System.out.println("Are you male or female?: ");
+		    System.out.println("---------");    
+			System.out.println("  1) Male");
+			System.out.println("  2) Female");
+			System.out.println("  0) Exit");
+			int maleOrFemale = input.nextInt();
+			boolean male = true;
+			
+			if (maleOrFemale == 1){
+				male = true;
+			}
+			if(maleOrFemale == 2){
+				male = false;
+			}
+			
+			System.out.println("Please enter your address: ");
+			String address = input.next();
+			
+			 System.out.println("What field are you in?: ");
+			    System.out.println("---------");    
+				System.out.println("  1) Intern");
+				System.out.println("  2) General");
+				System.out.println("  3) Specialst");
+				System.out.println("  0) Exit");
+				int field = input.nextInt();
+				int registrationFees = 0;
+				
+				if (field == 1){
+					System.out.println("Please enter your phone number: ");
+					int phoneNumber = input.nextInt();
+					
+					registrationFees = 310;
+					
+					Doctor intern = new Intern(name, cal, male, address, registrationFees, phoneNumber);
+					addDoctor(intern);
+				}
+				
+				if (field == 2){
+					System.out.println("Please enter your phone number: ");
+					int phoneNumber = input.nextInt();
+					
+					System.out.println("Did you qualify in Ireland y/n?: ");
+					String qualifiedInIreland = input.next();
+					
+					boolean qualified = false;
+					
+					
+					if (qualifiedInIreland.toLowerCase().equals("y")){
+						registrationFees = 194;
+						qualified = true; 
+						
+						Doctor general = new General(name, cal, male, address, registrationFees, phoneNumber, qualified, null);
+						addDoctor(general);
+					
+					}
+                    if (qualifiedInIreland.toLowerCase().equals("n")){
+						registrationFees = 410;
+						Doctor general = new General(name, cal, male, address, registrationFees, phoneNumber, qualified, null);
+						addDoctor(general);
+					}
+                    if (!qualifiedInIreland.toLowerCase().equals("y") || !qualifiedInIreland.toLowerCase().equals("n"))
+                    {
+                    	System.out.println("Not valid Data!");
+                    }
+				}
+                    
+                    if (field == 3){
+                    	System.out.println("Please enter your phone number: ");
+            			int phoneNumber = input.nextInt();
+            			
+    					System.out.println("Did you qualify in Ireland y/n?: ");
+    					String qualifiedInIreland = input.next();
+    					
+    					boolean qualified = false;
+    					
+    					if (qualifiedInIreland.toLowerCase().equals("y")){
+    						registrationFees = 425;
+    						qualified = true;
+    						Doctor specialist = new Specialist(name, cal, male, address, registrationFees, phoneNumber, qualified, null);
+    						addDoctor(specialist);
+    					
+    					}
+                        if (qualifiedInIreland.toLowerCase().equals("n")){
+    						registrationFees = 641;
+    						Doctor specialist = new Specialist(name, cal, male, address, registrationFees, phoneNumber, qualified, null);
+    						addDoctor(specialist);
+    					}
+                        else{
+                        	System.out.println("Not valid data!");
+                        }
+                    }
+	}
+	
+	
+	public void addDoctor(Doctor doctor){
+				doctors.add(doctor);
+			}
+	
+			
+	public	Doctor deleteDoctor(String	name){
+	    searchForDoctor(name);
+		return doctors.get(doctorNumber);
+	}
+    
+	private void deleteDoctor(){
+		System.out.println("What is the doctors name?: ");
+		String name = input.next();
+		deleteDoctor(name);
+	}
+	
+	public double totalRegistrationOwed(){
+		double total = 0;
+		for(int i = 0; i < doctors.size(); i++){
+			double amount = doctors.get(i).getRegistrationFees();
+			total += amount;
+		}
+		return total;
+	}
+	
+	public	double	totalInternRegistrationOwed (){
+		double total = 0;
+		for(int i = 0; i < doctors.size(); i++){
+			if (doctors.get(i).getRegistrationFees() == 310){
+				int a = 310;
+				total += a;
+			}
+		}
+		return total;
+	}
+	
+	public	double	totalGeneralRegistrationOwed (){
+		double total = 0;
+		for(int i=0; i < doctors.size(); i++){
+			if (doctors.get(i).getRegistrationFees() == 194){
+				int a = 194;
+				total += a;
+			}
+			if (doctors.get(i).getRegistrationFees() == 410){
+				int b = 410;
+				total += b;
+			}
+		}
+		return total;
+	}
+	
+	public	double	totalSpecialistRegistrationOwed (){
+		double total = 0;
+		for(int i=0; i < doctors.size(); i++){
+			if (doctors.get(i).getRegistrationFees() == 425){
+				int a = 425;
+				total += a;
+			}
+			if (doctors.get(i).getRegistrationFees() == 641){
+				int b = 641;
+				total += b;
+			}
+		}
+		return total;
+	}
+	
+	public	String	allDoctors(){
+		//TODO
+		String str = "";
+		for (int i=0; i < doctors.size(); i++){
+			str += (doctors.get(i).toString()); 
+		}
+		return str;
+	}
+	
+	private	int	searchForDoctor(String	name){
+	int i =0;
+	
+	while (i < doctors.size()){
+		if (doctors.get(i).getName().equalsIgnoreCase(name)){
+			return i;
+		}
+		i++;
+	}
+	return -1;
+	}
+
+
+	public String toString() {
+		return "MedicalCouncil" + "\n" + "Total Amount owed: " + 
+				+ totalRegistrationOwed() + "\n" + "Total Intern Registration Owed: " 
+				+ totalInternRegistrationOwed() + "\n" + "Total General Registraion Owed: "
+				+ totalGeneralRegistrationOwed() + "\n" + "Total Specialist Registraion Owed: " 
+				+ totalSpecialistRegistrationOwed() + "\n" + "All Doctors"
+				+ allDoctors();
+	}
+	
+	
+}
