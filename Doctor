@@ -1,0 +1,104 @@
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+
+public abstract class Doctor {
+ 
+	private String name;
+	private Calendar dateOfBirth;
+	private boolean male; //not sure
+	private String address;
+	private double registrationFees;
+	private int phoneNumber;
+	ArrayList<Qualification> qualifications = new ArrayList<Qualification>();
+	
+	public Doctor(String name, Calendar dateOfBirth, boolean male, String address, double registrationFees, int phoneNumber){
+		this.name=name;
+		this.dateOfBirth=dateOfBirth;
+		this.male=male;
+		this.address=address;
+		this.registrationFees=registrationFees;
+		this.phoneNumber=phoneNumber;
+	}
+	
+	public void setName(String name){
+		this.name=name;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public void setDateOfBirth(Calendar dateOfBirth){
+		this.dateOfBirth=dateOfBirth;
+	}
+	
+	public Calendar getDateOfBirth(){
+		return dateOfBirth;
+	}
+	
+	public void setMaleOrFemale(boolean male){
+		if (male == true){
+			this.male=true;
+		}
+		else{
+			this.male=false;
+		}
+	}
+	
+	public String getMaleOrFemale(){
+		if (male == true){
+			return "Male";
+		}
+		else{
+			return "Female";
+		}
+	}
+	
+	public void setAddress(String address){
+		this.address=address;
+	}
+	
+	public String getAddress(){
+		return address;
+	}
+	
+	public void setRegistrationFees(double registrationFees){
+		this.registrationFees=registrationFees;
+	}
+	
+	public double getRegistrationFees(){
+		return registrationFees;
+	}
+	
+	
+	public void setPhoneNumber(int phoneNumber){
+		this.phoneNumber=phoneNumber;
+	}
+	
+	public int getPhoneNumber(){
+		return phoneNumber;
+	}
+	
+	public abstract double calculateRegistrationFee();
+	
+	public void addQualification(Qualification qualification){
+		qualifications.add(qualification);
+	}
+
+
+	public String toString() {
+		  SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); 
+		return "Name Of Doctor: " + name + "\n" + "Date Of Birth: "
+				+ sdf.format(getDateOfBirth().getTime()) + "\n" + "Male or Female: " + getMaleOrFemale() + "\n"
+				+ "Address: " + address + "\n" + "Registration Fees: "
+				+ registrationFees + "\n" + "Phone Number: "
+				+ phoneNumber + "\n" + "--------------------------------------------------------" + "\n";
+	}
+	
+	
+	
+	
+}
