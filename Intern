@@ -1,0 +1,17 @@
+import java.util.Calendar;
+
+
+public class Intern extends Doctor {
+
+	
+	public Intern(String name, Calendar dateOfBirth, boolean male, String address, double registrationFees, int phoneNumber){
+		super(name, dateOfBirth, male, address, registrationFees, phoneNumber);
+	}
+
+	public double calculateRegistrationFee() {
+        setRegistrationFees(310);
+        return 310;
+	}
+	
+	
+}
