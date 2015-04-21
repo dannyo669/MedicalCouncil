@@ -1,0 +1,39 @@
+import java.util.Date;
+
+public class Complaint {
+private int complaintId;
+private Date complaintDate;
+private String resultOfComplaint;
+
+public Complaint(int complaintId, Date complaintDate, String resultOfComplaint){
+	this.complaintId=complaintId;
+	this.complaintDate=complaintDate;
+	this.resultOfComplaint=resultOfComplaint;
+}
+
+public int getComplaintId() {
+	return complaintId;
+}
+
+public void setComplaintId(int complaintId) {
+	this.complaintId = complaintId;
+}
+
+public Date getComplaintDate() {
+	return complaintDate;
+}
+
+public void setComplaintDate(Date complaintDate) {
+	this.complaintDate = complaintDate;
+}
+
+public String getResultOfComplaint() {
+	return resultOfComplaint;
+}
+
+public void setResultOfComplaint(String resultOfComplaint) {
+	this.resultOfComplaint = resultOfComplaint;
+}
+
+
+}
