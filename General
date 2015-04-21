@@ -1,0 +1,24 @@
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+
+public class General extends QualifiedDoctor{
+
+
+	public General(String name, Calendar dateOfBirth, boolean male, String address, double registrationFees, int phoneNumber, 
+			boolean qualifiedInIreland, ArrayList<Complaint> complaints){
+		super(name, dateOfBirth, male, address, registrationFees, phoneNumber, qualifiedInIreland, complaints);
+	}
+
+	public double calculateRegistrationFee() {
+		if (getQualifiedInIreland() == true){
+			setRegistrationFees(194);
+			return getRegistrationFees();
+		}
+		else{
+			setRegistrationFees(410);
+			return getRegistrationFees();
+		}
+	}
+}
