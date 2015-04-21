@@ -1,0 +1,49 @@
+
+public class Qualification {
+
+	private String typeOfDegree;
+	private String nameOfDegree;
+	private String nameOfCollege;
+	private int year;
+	
+	public Qualification(String typeOfDegree, String nameOfDegree, String nameOfCollege, int year){
+		this.typeOfDegree=typeOfDegree;
+		this.nameOfDegree=nameOfDegree;
+		this.nameOfCollege=nameOfCollege;
+		this.year=year;
+	}
+
+	public String getTypeOfDegree() {
+		return typeOfDegree;
+	}
+
+	public void setTypeOfDegree(String typeOfDegree) {
+		this.typeOfDegree = typeOfDegree;
+	}
+
+	public String getNameOfDegree() {
+		return nameOfDegree;
+	}
+
+	public void setNameOfDegree(String nameOfDegree) {
+		this.nameOfDegree = nameOfDegree;
+	}
+
+	public String getNameOfCollege() {
+		return nameOfCollege;
+	}
+
+	public void setNameOfCollege(String nameOfCollege) {
+		this.nameOfCollege = nameOfCollege;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+	
+	
+}
