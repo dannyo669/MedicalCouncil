@@ -1,39 +1,69 @@
 import java.util.Date;
 
+/*
+ * This is a class that sets up Complaints.
+ * @version 1
+ * @author Danny O'Leary
+ */
+
 public class Complaint {
-private int complaintId;
-private Date complaintDate;
-private String resultOfComplaint;
+	private int complaintId;
+	private Date complaintDate;
+	private String resultOfComplaint;
 
-public Complaint(int complaintId, Date complaintDate, String resultOfComplaint){
-	this.complaintId=complaintId;
-	this.complaintDate=complaintDate;
-	this.resultOfComplaint=resultOfComplaint;
-}
+	/*
+	 * Constructor for the Complaint class
+	 */
+	public Complaint(int complaintId, Date complaintDate, String resultOfComplaint){
+		this.complaintId=complaintId;
+		this.complaintDate=complaintDate;
+		this.resultOfComplaint=resultOfComplaint;
+	}
 
-public int getComplaintId() {
-	return complaintId;
-}
+	/*
+	 * returns the complaintID.
+	 */
+	public int getComplaintId() {
+		return complaintId;
+	}
 
-public void setComplaintId(int complaintId) {
-	this.complaintId = complaintId;
-}
+	/*
+	 * Sets the complaint ID.
+	 * @param complaintId The id you wish to set the complaintId to.
+	 */
+	public void setComplaintId(int complaintId) {
+		this.complaintId = complaintId;
+	}
 
-public Date getComplaintDate() {
-	return complaintDate;
-}
+	/*
+	 * Returns the complaint date.
+	 */
+	public Date getComplaintDate() {
+		return complaintDate;
+	}
 
-public void setComplaintDate(Date complaintDate) {
-	this.complaintDate = complaintDate;
-}
+	/*
+	 * Sets the complaint Date
+	 * @param complaintDate This is the date you set.
+	 */
+	public void setComplaintDate(Date complaintDate) {
+		this.complaintDate = complaintDate;
+	}
 
-public String getResultOfComplaint() {
-	return resultOfComplaint;
-}
+	/*
+	 * Returns the string of the result of what the complaint is
+	 */
+	public String getResultOfComplaint() {
+		return resultOfComplaint;
+	}
 
-public void setResultOfComplaint(String resultOfComplaint) {
-	this.resultOfComplaint = resultOfComplaint;
-}
+	/*
+	 * Sets the result of the complaint
+	 * @param resultOfComplaint the resultOfComplaint you want to set.
+	 */
+	public void setResultOfComplaint(String resultOfComplaint) {
+		this.resultOfComplaint = resultOfComplaint;
+	}
 
 
 }
