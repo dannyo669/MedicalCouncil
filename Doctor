@@ -1,11 +1,19 @@
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Scanner;
 
+/*
+ * This is a class that alows inheritence.
+ * @version 1
+ * @author Danny O'Leary
+ */
 
 public abstract class Doctor {
- 
+
 	private String name;
 	private Calendar dateOfBirth;
 	private boolean male; //not sure
@@ -13,92 +21,183 @@ public abstract class Doctor {
 	private double registrationFees;
 	private int phoneNumber;
 	ArrayList<Qualification> qualifications = new ArrayList<Qualification>();
-	
+	ArrayList<Complaint> complaints = new ArrayList<Complaint>();
+	private Scanner input;
+
+	/*
+	 * The constructor for Doctor
+	 */
 	public Doctor(String name, Calendar dateOfBirth, boolean male, String address, double registrationFees, int phoneNumber){
-		this.name=name;
+
+		if (name.length() <= 20){
+			this.name=name;
+		}
+		else{
+			name = name.substring(0, 20);
+			this.name=name;
+		}
+
 		this.dateOfBirth=dateOfBirth;
 		this.male=male;
-		this.address=address;
+
+		if (address.length() <= 70){
+			this.address=address;
+		}
+		else{
+			address = address.substring(0, 70);
+			this.address=address;
+		}
 		this.registrationFees=registrationFees;
+
 		this.phoneNumber=phoneNumber;
 	}
-	
+
+	/*
+	 * Sets the doctors name
+	 * @param the name you wish to set
+	 */
 	public void setName(String name){
-		this.name=name;
+		if (name.length() <= 20){
+			this.name=name;	
+		}
+		else {
+			name = name.substring(0, 20);
+			this.name = name;
+		}
+
 	}
-	
+
+	/*
+	 * returns the name
+	 */
 	public String getName(){
 		return name;
 	}
-	
+
+	/*
+	 * Sets the doctors Date of Birth
+	 * @param dateOfBirth the date of birth you wish to set
+	 */
 	public void setDateOfBirth(Calendar dateOfBirth){
 		this.dateOfBirth=dateOfBirth;
 	}
-	
+
+	/*
+	 * returns the date of birth of the doctor
+	 */
 	public Calendar getDateOfBirth(){
 		return dateOfBirth;
 	}
-	
+
+	/*
+	 * Sets the gender of the Doctor
+	 * @param male if male is true it means the Doctor is male, otherwise it's a girl
+	 */
 	public void setMaleOrFemale(boolean male){
-		if (male == true){
+		if (male){
 			this.male=true;
 		}
 		else{
 			this.male=false;
 		}
 	}
-	
+
+	/*
+	 * gets if the doctor is male or female and returns it as a string
+	 */
 	public String getMaleOrFemale(){
-		if (male == true){
+		if (male){
 			return "Male";
 		}
 		else{
 			return "Female";
 		}
 	}
-	
+
+	/*
+	 * Sets the address of the doctor
+	 * @param address the address you wish to set
+	 */
 	public void setAddress(String address){
-		this.address=address;
+		if (address.length() <= 70){
+			this.address=address;
+		}
+		else{
+			address = address.substring(0, 70);
+			this.address=address;
+		}
 	}
-	
+
+	/*
+	 * Returns the address
+	 */
 	public String getAddress(){
 		return address;
 	}
-	
+
+	/*
+	 * Sets the registration fees
+	 * @param registrationFees the price you want to set
+	 */
 	public void setRegistrationFees(double registrationFees){
 		this.registrationFees=registrationFees;
 	}
-	
+
+	/*
+	 * returns the registration fee
+	 */
 	public double getRegistrationFees(){
 		return registrationFees;
 	}
-	
-	
+
+	/*
+	 * sets the phone number of the doctor
+	 * @param phoneNumber the phonenumber you want to set
+	 */
 	public void setPhoneNumber(int phoneNumber){
 		this.phoneNumber=phoneNumber;
 	}
-	
+
+	/*
+	 * returns the phone number
+	 */
 	public int getPhoneNumber(){
 		return phoneNumber;
 	}
-	
-	public abstract double calculateRegistrationFee();
-	
+
+	/*
+	 * Abstract method to calculate Registration Fees which subclasses can overwrite
+	 */
+	public abstract double calculateRegistrationFee(); // Not being used
+
+	/*
+	 * Adds qualifications for the Doctor
+	 * @param qualification the qualification you wish to add
+	 */
 	public void addQualification(Qualification qualification){
 		qualifications.add(qualification);
 	}
 
-
-	public String toString() {
-		  SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); 
-		return "Name Of Doctor: " + name + "\n" + "Date Of Birth: "
-				+ sdf.format(getDateOfBirth().getTime()) + "\n" + "Male or Female: " + getMaleOrFemale() + "\n"
-				+ "Address: " + address + "\n" + "Registration Fees: "
-				+ registrationFees + "\n" + "Phone Number: "
-				+ phoneNumber + "\n" + "--------------------------------------------------------" + "\n";
+	/*
+	 * Adds complaints for the Doctor
+	 * @param complaint the complaint you wish to add
+	 */
+	public void addComplaint(Complaint complaint){
+		complaints.add(complaint); //Not in spec, but needed to display in Medical Council?
 	}
-	
-	
-	
-	
+	/*
+	 * toString of all the information of the doctor
+	 */
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); 
+		return "Name Of Doctor: " + name + "\n" + "Date Of Birth: "
+		+ sdf.format(getDateOfBirth().getTime()) + "\n" + "Male or Female: " + getMaleOrFemale() + "\n"
+		+ "Address: " + address + "\n" + "Registration Fees: "
+		+ registrationFees + "\n" + "Phone Number: "
+		+ phoneNumber + "\n" + "--------------------------------------------------------" + "\n";
+	}
+
+
+
+
 }
