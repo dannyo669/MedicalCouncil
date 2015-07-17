@@ -1,52 +1,119 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
+/*
+ * This is a class that alows inheritence.
+ * @version 1
+ * @author Danny O'Leary
+ */
 
 public abstract class QualifiedDoctor extends Doctor {
 	private boolean qualifiedInIreland;
-	 ArrayList<Complaint> complaints = new ArrayList<Complaint>();
-		private Scanner input;
+	ArrayList<Complaint> complaints = new ArrayList<Complaint>();
+	ArrayList<Qualification> qualifications = new ArrayList<Qualification>();
+	private Scanner input;
 
+	/*
+	 * The constructor for Qualified Doctor
+	 */
 	public QualifiedDoctor(String name, Calendar dateOfBirth, boolean male, String address, double registrationFees, 
-			int phoneNumber, boolean qualifiedInIreland, ArrayList<Complaint> complaints)
+			int phoneNumber, boolean qualifiedInIreland, ArrayList<Complaint> complaints, ArrayList<Qualification> qualifications)
 	{
 		super(name, dateOfBirth, male, address, registrationFees, phoneNumber);
-		
+
 		this.qualifiedInIreland=qualifiedInIreland;
 		complaints = new ArrayList<Complaint>();
+		qualifications = new ArrayList<Qualification>();
 		input = new Scanner(System.in);
 	}
 
+	/*
+	 * returns if they qualified in Ireland or not
+	 */
 	public boolean getQualifiedInIreland() {
 		return qualifiedInIreland;
 	}
 
+	/*
+	 * sets if they qualified in Ireland or not
+	 * @param qualifiedInIreland true/false if they did or didnt setter 
+	 */
 	public void setQualifiedInIreland(boolean qualifiedInIreland) {
 		this.qualifiedInIreland = qualifiedInIreland;
 	}
-	
-	
-	public void addComplaint(Complaint complaint){
-		String startingComplaint = "Open";
-		 Calendar c = new GregorianCalendar(); // Reference: http://stackoverflow.com/questions/9629636/get-todays-date-in-java
-		    Date date = c.getTime();
-		    int i = 1;
-		    complaint = new Complaint(i, date, startingComplaint);
-		    complaints.add(complaint);
+
+	/*
+	 * returns qualifications
+	 */
+	public String getQualification(){
+		sortQualifications();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); 
+		String str = "";
+		int i = 0;
+		for (Qualification qualification: qualifications){
+			str += "-------------------------" + "\n" + "Type of degree " + qualifications.get(i).getTypeOfDegree() + "\n" + "Name Of Degree: "  + qualifications.get(i).getNameOfDegree() + "\n" + "Name Of College: "
+					+ qualifications.get(i).getNameOfCollege() + "\n" + "Year of qualification: " + qualifications.get(i).getYear() + "\n" + "-------------------------" + "\n";
+			i++;
+		}
+		return str;
 	}
-	
+
+	/*
+	 * sorts the qualifications by name of degree
+	 */
+	private void sortQualifications(){
+		for (int j=qualifications.size()-1; j>= 0; j--){
+			for (int i = 0; i< j; i++){
+				if (qualifications.get(i).getNameOfDegree().compareTo(qualifications.get(i+1).getNameOfDegree()) > 0){
+					Collections.swap(qualifications, i, i+1);
+				}
+			}
+		}
+	}
+
+	/*
+	 * Adds qualifications for a qualified doctor
+	 */
+	public void addQualification(Qualification qualification){// It doesn't work in doctor?
+		qualifications.add(qualification);
+	}
+
+	/*
+	 * Adds complaints for a qualified doctor
+	 */
+	public void addComplaint(Complaint complaint){ // The actual method has been moved to Medical Council and is commented out below. needed to work in medical council
+		complaints.add(complaint);
+	}
+
+	//	public void addComplaint(Complaint complaint){
+	//		    String startingComplaint = "Open";
+	//		    Calendar c = new GregorianCalendar(); // Reference: http://stackoverflow.com/questions/9629636/get-todays-date-in-java
+	//		    Date date = c.getTime();
+	//		    System.out.println("Assign the complaint an id: ");
+	//		    int i = input.nextInt();
+	//		    complaint = new Complaint(i, date, startingComplaint);
+	//		    complaints.add(complaint);
+	//	}
+
+	/*
+	 * Updates the complaint status
+	 * @param complaint sets the result
+	 * @param status what they are setting the result to
+	 */
 	public void updateComplaintStatus(Complaint complaint, String status){
-		//TODO
 		System.out.println("What do you want to update the ComplaintStatus to?");
 		System.out.println("---------");    
-		System.out.println("  1) Upheld");
-		System.out.println("   2)  Rejected");
+		System.out.println("  1)  Upheld");
+		System.out.println("  2)  Rejected");
+		System.out.println("  3)  Open");
 		System.out.println("   0) Exit");
 		int option = input.nextInt();
-		
+
 		if (option == 1){
 			status = "Upheld";
 			complaint.setResultOfComplaint(status);
@@ -55,18 +122,69 @@ public abstract class QualifiedDoctor extends Doctor {
 			status = "Rejected";
 			complaint.setResultOfComplaint(status);
 		}
+		else if(option == 3){
+			status = "Open";
+			complaint.setResultOfComplaint(status);
+		}
 		else{
 			System.out.println("Invalid input");
 		}
 	}
-	
-	public void sortComplaints(){
-		//TODO
-		
+
+	/*
+	 * sorts the complaints by ID
+	 */
+	private void sortComplaints(){
+		for (int j=complaints.size()-1; j>= 0; j--){
+			for (int i = 0; i< j; i++){
+				if (complaints.get(i).getComplaintId() > complaints.get(i+1).getComplaintId()){
+					Collections.swap(complaints, i, i+1);
+				}
+			}
+		}
 	}
-	
+
+	/*
+	 * returns the complaints
+	 */
+	public String getComplaints(){
+		sortComplaints();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); 
+		String str = "";
+		int i = 0;
+		for (Complaint complaint: complaints){
+			str += "\n" + "-------------------------" + "\n" + "Complaint Id: " + complaints.get(i).getComplaintId() + "\n" + "Complaint Date: "  + sdf.format(complaints.get(i).getComplaintDate().getTime()) + "\n" + "Result of Complaint: "
+					+ complaints.get(i).getResultOfComplaint() + "\n" + "-------------------------" + "\n";
+			i++;
+		}
+		return str;
+	}
+
+	/*
+	 * searches for complaints
+	 */
 	public	int	searchForComplaint(int id){
-		//TODO
-		return 0;
+		System.out.println("What is the complaint ID?");
+		id = input.nextInt();
+		for (Complaint complaint: complaints){
+			if (id == complaint.getComplaintId()){
+				return complaint.getComplaintId();
+			}
+		}
+		return -1;
+	}
+
+	/*
+	 * toString for a qualified Doctor
+	 */
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); 
+		return "Name Of Doctor: " + getName() + "\n" + "Date Of Birth: "
+		+ sdf.format(getDateOfBirth().getTime()) + "\n" + "Male or Female: " + getMaleOrFemale() + "\n"
+		+ "Address: " + getAddress() + "\n" + "Registration Fees: "
+		+ getRegistrationFees() + "\n" + "Phone Number: "
+		+ getPhoneNumber() + "\n" + "Qualified in Ireland:" + getQualifiedInIreland() + "\n" + "Complaints: " + getComplaints() +  "\n" + "Qualifications: " + getQualification() +"\n" +
+		"--------------------------------------------------------" + "\n";
 	}
 }
+
