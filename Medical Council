@@ -1,27 +1,42 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
-
+/*
+ * This is a class that allows a Medical Council menu to be run.
+ * @version 1
+ * @author Danny O'Leary
+ */
 public class MedicalCouncil {
 
 
 	private Scanner input;
 	ArrayList<Doctor> doctors = new ArrayList<Doctor>();
 	private int doctorNumber;
-	
+	ArrayList<Qualification> qualifications = new ArrayList<Qualification>();
+	ArrayList<Complaint> complaints = new ArrayList<Complaint>();
+
+	/*
+	 * Constructor that starts the run method.
+	 */
 	public MedicalCouncil()
 	{
 		input = new Scanner(System.in);
 		run();
 	}
 
+
 	public static void main(String[] argvs){
 		MedicalCouncil medicalCouncil = new MedicalCouncil();
 	}
-		
+
+	/*
+	 * The run method sets up a menu with different options that can be selected from the mainMenu() method
+	 */
 	private void run()  
 	{
 		//TODO
@@ -34,7 +49,7 @@ public class MedicalCouncil {
 			case 1:    		doctorSetup();
 			break;
 			case 2:         deleteDoctor();
-			                doctors.remove(doctorNumber);
+			  				doctors.remove(doctorNumber);
 			break;			
 			case 3:     	edit();				
 			break;
@@ -44,9 +59,16 @@ public class MedicalCouncil {
 			break;
 			case 6:	        System.out.println(allDoctors());
 			break;
-			case 7:          // Average	
+			case 7:        addComplaint(); 
 			break;
-			case 8:    
+			case 8:        addQualification();
+			break;
+			case 9:        System.out.println(averageRegistrationOwed());
+			break;
+			case 10:	   System.out.println(getComplaints());
+			break;
+			case 11:       searchForComplaint();
+			break;
 			default:       System.out.println("Invalid option entered: " + option);
 			break;
 			}
@@ -63,7 +85,9 @@ public class MedicalCouncil {
 		System.exit(0);
 	}
 
-	
+	/*
+	 * The mainMenu() method allows users to pick an option from the menu and then returns the option
+	 */
 	private int mainMenu()     
 	{ 
 		System.out.println("Medical Council Menu");
@@ -74,249 +98,383 @@ public class MedicalCouncil {
 		System.out.println("  4) Total Registration that is owed"); 
 		System.out.println("  5) Total Intern Registration fees that are owed");  
 		System.out.println("  6) List all the doctors "); 
-		System.out.println("  7) The Average of what's owed");
-		System.out.println("  8) Add a complaint");
+		System.out.println("  7) Add Complaints");
+		System.out.println("  8) Add Qualifications");
+		System.out.println("  9) Average Amount");
+		System.out.println(" 10) Get a list of complaints "); 
+		System.out.println(" 11) Search for a complaint");
 		System.out.println("  0) Exit");
 		System.out.print("==>> ");
-		int option = input.nextInt();
-		return option;	
+		try {
+			int option = input.nextInt();
+			return option;	
+		}
+		catch (Exception e){
+			System.out.println("Error invalid Data");
+		}
+		return -1;
 	}
-	
-     private int editMenu(){
+
+	/*
+	 * The editMenu() allows a user to pick which detail they would like to edit corresponding with the edit() method
+	 */
+	private int editMenu(){
 		{
 			{
-		        		System.out.println("Which details would you like to change: ");
-		        		System.out.println("Edit Details Menu");
-		        		System.out.println("---------");     
-		        		System.out.println("  1) Edit Name");    
-		        		System.out.println("  2) Edit Date of Birth");        
-		        		System.out.println("  3) Edit Gender"); 
-		        		System.out.println("  4) Edit Address"); 
-		        		System.out.println("  5) Edit Phone Number");  
-		        		System.out.println("  6) Go back to Main Menu"); 
-		        		System.out.print("==>> ");
-		        		int option = input.nextInt();
-		        		return option;	
-		        	}	
-			 }
-     }
-     
-     private void edit(){
-   	     System.out.println("What is the doctors name that you would like to edit: ");
-		 String name = input.next();
-    	 if (searchForDoctor(name) != -1){
-    	 int option = editMenu(); 
- 		 while (option != 0){
- 			switch (option)
-			{
-			case 1:    	System.out.println("Enter the name you wish to change to: ");
-						String newName = input.next();
-						doctors.get(searchForDoctor(name)).setName(newName);
-			break;
-			case 2:     System.out.println("Please select your birth month: ");
-						System.out.println("---------");    
-						System.out.println("  1) January");
-						System.out.println("  2) February");
-						System.out.println("  3) March");
-						System.out.println("  4) April");
-						System.out.println("  5) May");
-						System.out.println("  6) June");
-						System.out.println("  7) July");
-						System.out.println("  8) August");
-						System.out.println("  9) September");
-						System.out.println(" 10) October");
-						System.out.println(" 11) November");
-						System.out.println(" 12) December");
-						System.out.println("  0) Exit");
-						int month = input.nextInt();
-			
-						System.out.println("Please enter the day you were born: ");
-						int day = input.nextInt();
-			
-						System.out.println("Please enter the year you were born: ");
-						int year = input.nextInt();
-			
-						Calendar cal = new GregorianCalendar(year, month - 1, day);    
-						doctors.get(searchForDoctor(name)).setDateOfBirth(cal);
-			break;			
-			case 3:     System.out.println("Are you male y/n: ");
-						String a = input.nextLine().trim().toLowerCase();
-						if (a.toLowerCase().equals("y"))
-						{
-							doctors.get(searchForDoctor(name)).setMaleOrFemale(true);
-						}
-						else{
-							doctors.get(searchForDoctor(name)).setMaleOrFemale(false);
-						}
-			break;
-			case 4:   System.out.println("What is the new Address that you would like: ");
-					  String address = input.next();
-					  doctors.get(searchForDoctor(name)).setAddress(address);
-			break;
-			case 5:   System.out.println("What is the new phone number that you would like: ");
-			          int phoneNumber = input.nextInt();
-			          doctors.get(searchForDoctor(name)).setPhoneNumber(phoneNumber);
-			break;
-			case 6:     run();
-			break;
-			default:    System.out.println("Invalid option entered: " + option);
-			break;
-			}
- 			System.out.println("\nPress any key to continue...");
-			input.nextLine();
-			input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+				System.out.println("Which details would you like to change: ");
+				System.out.println("Edit Details Menu");
+				System.out.println("---------");     
+				System.out.println("  1) Edit Name");    
+				System.out.println("  2) Edit Date of Birth");        
+				System.out.println("  3) Edit Gender"); 
+				System.out.println("  4) Edit Address"); 
+				System.out.println("  5) Edit Phone Number");  
+				System.out.println("  6) Go back to Main Menu"); 
+				System.out.print("==>> ");
+				int option = input.nextInt();
+				return option;	
+			}	
+		}
+	}
 
-			//clear the terminal window and display the main menu again
-			System.out.println("\f");
-			option = editMenu();
-		}   
-		System.out.println("Exiting... bye");
-		System.exit(0);
- 		}
-    	else{
-    		System.out.println("Doctor not found!");
-    	}
-		 }
-	
+	/*
+	 * The edit method checks the option selected from the editMenu() and then it searches for a doctor that you would like to edit
+	 * Then it has an option for each to set the different fields
+	 */
+	private void edit(){
+		System.out.println("What is the doctors name that you would like to edit: ");
+		String name = input.next();
+		if (searchForDoctor(name) != -1){
+			int option = editMenu(); 
+			while (option != 0){
+				switch (option)
+				{
+				case 1:    	System.out.println("Enter the name you wish to change to: ");
+							input.nextLine();
+							String newName = input.nextLine();
+							doctors.get(searchForDoctor(name)).setName(newName);
+				break;
+				case 2:     System.out.println("Please select your birth month: ");
+							System.out.println("---------");    
+							System.out.println("  1) January");
+							System.out.println("  2) February");
+							System.out.println("  3) March");
+							System.out.println("  4) April");
+							System.out.println("  5) May");
+							System.out.println("  6) June");
+							System.out.println("  7) July");
+							System.out.println("  8) August");
+							System.out.println("  9) September");
+							System.out.println(" 10) October");
+							System.out.println(" 11) November");
+							System.out.println(" 12) December");
+							System.out.println("  0) Exit");
+							int month = input.nextInt();
+
+							System.out.println("Please enter the day you were born: ");
+							int day = input.nextInt();
+
+							System.out.println("Please enter the year you were born: ");
+							int year = input.nextInt();
+
+							Calendar cal = new GregorianCalendar(year, month - 1, day);    
+							doctors.get(searchForDoctor(name)).setDateOfBirth(cal);
+				break;			
+				case 3:     System.out.println("Are you male y/n: ");
+							String a = input.nextLine().trim().toLowerCase();
+							if (a.toLowerCase().equals("y"))
+							  {
+								doctors.get(searchForDoctor(name)).setMaleOrFemale(true);
+							  }
+							else{
+								doctors.get(searchForDoctor(name)).setMaleOrFemale(false);
+							}
+				break;
+				case 4:   System.out.println("What is the new Address that you would like: ");
+						  input.nextLine();
+						  String address = input.nextLine();
+						  doctors.get(searchForDoctor(name)).setAddress(address);
+				break;
+				case 5:   System.out.println("What is the new phone number that you would like: ");
+						  int phoneNumber = input.nextInt();
+						  doctors.get(searchForDoctor(name)).setPhoneNumber(phoneNumber);
+				break;
+				case 6:     run();
+				break;
+				default:    System.out.println("Invalid option entered: " + option);
+				break;
+				}
+				System.out.println("\nPress any key to continue...");
+				input.nextLine();
+				input.nextLine();  //this second read is required - bug in Scanner class; a String read is ignored straight after reading an int.
+
+				//clear the terminal window and display the main menu again
+				System.out.println("\f");
+				option = editMenu();
+			}   
+			System.out.println("Exiting... bye");
+			System.exit(0);
+		}
+		else{
+			System.out.println("Doctor not found!");
+		}
+	}
+
+	/*
+	 * This method sets up a doctor to use with addDoctor. 
+	 */
 	private void doctorSetup(){
 		System.out.println("Please enter your name: ");
-		String name = input.next();
-		
-		System.out.println("Please select your birth month: ");
-		System.out.println("---------");    
-		System.out.println("  1) January");
-		System.out.println("  2) February");
-		System.out.println("  3) March");
-		System.out.println("  4) April");
-		System.out.println("  5) May");
-		System.out.println("  6) June");
-		System.out.println("  7) July");
-		System.out.println("  8) August");
-		System.out.println("  9) September");
-		System.out.println(" 10) October");
-		System.out.println(" 11) November");
-		System.out.println(" 12) December");
-		System.out.println("  0) Exit");
-		int month = input.nextInt();
-		
-		System.out.println("Please enter the day you were born: ");
-		int day = input.nextInt();
-		
-		System.out.println("Please enter the year you were born: ");
-		int year = input.nextInt();
-		
+		input.nextLine();
+		String name = input.nextLine();
+		int month = -1;
+
+		while (month == -1){
+			System.out.println("Please select your birth month: ");
+			System.out.println("---------");    
+			System.out.println("  1) January");
+			System.out.println("  2) February");
+			System.out.println("  3) March");
+			System.out.println("  4) April");
+			System.out.println("  5) May");
+			System.out.println("  6) June");
+			System.out.println("  7) July");
+			System.out.println("  8) August");
+			System.out.println("  9) September");
+			System.out.println(" 10) October");
+			System.out.println(" 11) November");
+			System.out.println(" 12) December");
+			try{
+				month = input.nextInt();
+				if (month > 12 || month < 1){
+					month = -1;
+				}
+			}
+			catch (Exception e){
+				System.out.println("Invalid Data");
+				input.nextLine();
+			}
+		}
+
+		int day = -1;
+		while(day == -1){
+			System.out.println("Please enter the day you were born: ");
+			try {
+				day = input.nextInt();
+				if (day < 0 || day > 32){
+					day = -1;
+				}
+			}
+			catch (Exception e){
+				System.out.println("Invalid Data");
+				input.nextLine();
+			}
+		}
+
+		int year = -1;
+		while (year == -1){
+			System.out.println("Please enter the year you were born: ");
+			try {
+				year = input.nextInt();
+				if (year < 1000 || year > 2000){
+					year = -1;
+				}
+			}
+			catch (Exception e){
+				System.out.println("Invalid Data");
+				input.nextLine();
+			}
+		}
+
 		Calendar cal = new GregorianCalendar(year, month - 1, day);
-		   
-		    System.out.println("Are you male or female?: ");
-		    System.out.println("---------");    
+
+		boolean male = true;
+		int maleOrFemale = -1;
+		while (maleOrFemale == -1){
+			System.out.println("Are you male or female?: ");
+			System.out.println("---------");    
 			System.out.println("  1) Male");
 			System.out.println("  2) Female");
-			System.out.println("  0) Exit");
-			int maleOrFemale = input.nextInt();
-			boolean male = true;
-			
+			try{
+				maleOrFemale = input.nextInt();
+				if (maleOrFemale <1 || maleOrFemale > 2){
+					maleOrFemale = -1;
+				}
+			}
+			catch (Exception e){
+				System.out.println("Invalid Data");
+				input.nextLine();
+			}
+
+
+
 			if (maleOrFemale == 1){
 				male = true;
 			}
 			if(maleOrFemale == 2){
 				male = false;
 			}
-			
-			System.out.println("Please enter your address: ");
-			String address = input.next();
-			
-			 System.out.println("What field are you in?: ");
-			    System.out.println("---------");    
-				System.out.println("  1) Intern");
-				System.out.println("  2) General");
-				System.out.println("  3) Specialst");
-				System.out.println("  0) Exit");
-				int field = input.nextInt();
-				int registrationFees = 0;
-				
-				if (field == 1){
+		}
+
+
+		System.out.println("Please enter your address: ");
+		input.nextLine();
+		String address = input.nextLine();
+
+		int field = -1;
+		while(field == -1){
+			System.out.println("What field are you in?: ");
+			System.out.println("---------");    
+			System.out.println("  1) Intern");
+			System.out.println("  2) General");
+			System.out.println("  3) Specialst");
+			try{
+				field = input.nextInt();
+				if(field > 3 || field < 1){
+					field = -1;
+				}
+			}
+			catch (Exception e){
+				System.out.println("Invalid Data");
+				input.nextLine();
+			}
+			int registrationFees = 0;
+			int phoneNumber = -1;
+
+			if (field == 1){
+				while(phoneNumber == -1){
 					System.out.println("Please enter your phone number: ");
-					int phoneNumber = input.nextInt();
-					
+					try{
+						phoneNumber = input.nextInt();
+						if (phoneNumber <= 0){
+							phoneNumber = -1;
+						}
+					}
+					catch (Exception e){
+						System.out.println("Invalid Data");
+						input.nextLine();
+					}
+
 					registrationFees = 310;
-					
+
 					Doctor intern = new Intern(name, cal, male, address, registrationFees, phoneNumber);
 					addDoctor(intern);
 				}
-				
-				if (field == 2){
-					System.out.println("Please enter your phone number: ");
-					int phoneNumber = input.nextInt();
-					
-					System.out.println("Did you qualify in Ireland y/n?: ");
-					String qualifiedInIreland = input.next();
-					
-					boolean qualified = false;
-					
-					
-					if (qualifiedInIreland.toLowerCase().equals("y")){
-						registrationFees = 194;
-						qualified = true; 
-						
-						Doctor general = new General(name, cal, male, address, registrationFees, phoneNumber, qualified, null);
-						addDoctor(general);
-					
-					}
-                    if (qualifiedInIreland.toLowerCase().equals("n")){
-						registrationFees = 410;
-						Doctor general = new General(name, cal, male, address, registrationFees, phoneNumber, qualified, null);
-						addDoctor(general);
-					}
-                    if (!qualifiedInIreland.toLowerCase().equals("y") || !qualifiedInIreland.toLowerCase().equals("n"))
-                    {
-                    	System.out.println("Not valid Data!");
-                    }
-				}
-                    
-                    if (field == 3){
-                    	System.out.println("Please enter your phone number: ");
-            			int phoneNumber = input.nextInt();
-            			
-    					System.out.println("Did you qualify in Ireland y/n?: ");
-    					String qualifiedInIreland = input.next();
-    					
-    					boolean qualified = false;
-    					
-    					if (qualifiedInIreland.toLowerCase().equals("y")){
-    						registrationFees = 425;
-    						qualified = true;
-    						Doctor specialist = new Specialist(name, cal, male, address, registrationFees, phoneNumber, qualified, null);
-    						addDoctor(specialist);
-    					
-    					}
-                        if (qualifiedInIreland.toLowerCase().equals("n")){
-    						registrationFees = 641;
-    						Doctor specialist = new Specialist(name, cal, male, address, registrationFees, phoneNumber, qualified, null);
-    						addDoctor(specialist);
-    					}
-                        else{
-                        	System.out.println("Not valid data!");
-                        }
-                    }
-	}
-	
-	
-	public void addDoctor(Doctor doctor){
-				doctors.add(doctor);
 			}
-	
-			
+
+			if (field == 2){
+				while(phoneNumber == -1){
+					System.out.println("Please enter your phone number: ");
+					try{
+						phoneNumber = input.nextInt();
+						if (phoneNumber <= 0){
+							phoneNumber = -1;
+						}
+					}
+					catch (Exception e){
+						System.out.println("Invalid Data");
+						input.nextLine();
+					}
+				}
+
+				System.out.println("Did you qualify in Ireland y/n?: ");
+				String qualifiedInIreland = input.next();
+
+				boolean qualified = false;
+
+
+				if (qualifiedInIreland.toLowerCase().equals("y")){
+					registrationFees = 194;
+					qualified = true; 
+					Doctor general = new General(name, cal, male, address, registrationFees, phoneNumber, qualified, null, qualifications);
+					addDoctor(general);
+				}
+
+
+				else if (qualifiedInIreland.toLowerCase().equals("n")){
+					registrationFees = 410;
+					Doctor general = new General(name, cal, male, address, registrationFees, phoneNumber, qualified, null, qualifications);
+					addDoctor(general);
+
+				}
+
+				else
+				{
+					System.out.println("Not valid Data!");
+				}
+			}
+
+			if (field == 3){
+				while(phoneNumber == -1){
+					System.out.println("Please enter your phone number: ");
+					try{
+						phoneNumber = input.nextInt();
+						if (phoneNumber <= 0){
+							phoneNumber = -1;
+						}
+					}
+					catch (Exception e){
+						System.out.println("Invalid Data");
+						input.nextLine();
+					}
+				}
+
+
+				System.out.println("Did you qualify in Ireland y/n?: ");
+				String qualifiedInIreland = input.next();
+
+				boolean qualified = false;
+				if (qualifiedInIreland.toLowerCase().equals("y")){
+					registrationFees = 425;
+					qualified = true;
+					Doctor specialist = new Specialist(name, cal, male, address, registrationFees, phoneNumber, qualified, null, qualifications);
+					addDoctor(specialist);
+				}
+
+
+				else if (qualifiedInIreland.toLowerCase().equals("n")){
+					registrationFees = 641;
+					Doctor specialist = new Specialist(name, cal, male, address, registrationFees, phoneNumber, qualified, null, qualifications);
+					addDoctor(specialist);
+				}
+
+				else{
+					System.out.println("Not valid data!");
+				}
+			}
+		}
+	}
+
+	/*
+	 * This method adds a doctor to the ArrayList.
+	 * @param Doctor doctor allows a doctor of type Doctor to be added
+	 */
+	public void addDoctor(Doctor doctor){
+		doctors.add(doctor);
+	}
+
+	/*
+	 * This method returns a deleted doctor
+	 * @param name allows a String to be searched for the name you want		
+	 */
 	public	Doctor deleteDoctor(String	name){
-	    searchForDoctor(name);
+		searchForDoctor(name);
 		return doctors.get(doctorNumber);
 	}
-    
+
+
+	/*
+	 * This method is a private method that gets the doctors name and feeds it back into delete doctor
+	 */
 	private void deleteDoctor(){
-		System.out.println("What is the doctors name?: ");
+		System.out.println("What is the doctors name?: "); //This method is now unneeded delete and add the info to deleteDoctor.
 		String name = input.next();
 		deleteDoctor(name);
 	}
-	
+
+	/*
+	 * This method calculates the total registration that is owed.
+	 */
 	public double totalRegistrationOwed(){
 		double total = 0;
 		for(int i = 0; i < doctors.size(); i++){
@@ -325,7 +483,10 @@ public class MedicalCouncil {
 		}
 		return total;
 	}
-	
+
+	/*
+	 * This method calculates the total interns owe.
+	 */
 	public	double	totalInternRegistrationOwed (){
 		double total = 0;
 		for(int i = 0; i < doctors.size(); i++){
@@ -336,7 +497,10 @@ public class MedicalCouncil {
 		}
 		return total;
 	}
-	
+
+	/*
+	 * This method calculates the total generals owe.
+	 */
 	public	double	totalGeneralRegistrationOwed (){
 		double total = 0;
 		for(int i=0; i < doctors.size(); i++){
@@ -351,7 +515,10 @@ public class MedicalCouncil {
 		}
 		return total;
 	}
-	
+
+	/*
+	 * This methods calculates the total specialists owe.
+	 */
 	public	double	totalSpecialistRegistrationOwed (){
 		double total = 0;
 		for(int i=0; i < doctors.size(); i++){
@@ -366,29 +533,110 @@ public class MedicalCouncil {
 		}
 		return total;
 	}
-	
+
+	/*
+	 * This method calculates the average of all the registration that is currently owed in the system.
+	 */
+	public double averageRegistrationOwed(){
+		double total = 0;
+		double average = 0;
+		for(int i=0; i<doctors.size(); i++){
+			total += doctors.get(i).getRegistrationFees();
+		}
+		average = total / doctors.size();
+		return toTwoDecimalPlaces(average);
+	}
+
+	/*
+	 * This method returns all doctors in the Array List in alphabetical order.
+	 */
 	public	String	allDoctors(){
-		//TODO
+		sortDoctors();
 		String str = "";
 		for (int i=0; i < doctors.size(); i++){
 			str += (doctors.get(i).toString()); 
 		}
 		return str;
 	}
-	
-	private	int	searchForDoctor(String	name){
-	int i =0;
-	
-	while (i < doctors.size()){
-		if (doctors.get(i).getName().equalsIgnoreCase(name)){
-			return i;
+
+	/*
+	 * This method sorts the doctors in the ArrayList in alphabetical order.
+	 */
+	private void sortDoctors(){
+		for (int j=doctors.size()-1; j>= 0; j--){
+			for (int i = 0; i< j; i++){
+				if (doctors.get(i).getName().compareTo(doctors.get(i+1).getName()) > 0){
+					Collections.swap(doctors, i, i+1);
+				}
+			}
 		}
-		i++;
-	}
-	return -1;
 	}
 
+	/*
+	 * This method allows a search for a doctor and returns where they are in the array
+	 * @param name The name on which a doctor is searched for
+	 */
+	private	int	searchForDoctor(String	name){
+		int i =0;
 
+		while (i < doctors.size()){
+			if (doctors.get(i).getName().equalsIgnoreCase(name)){
+				System.out.println("Doctor Found!");
+				return i;
+			}
+			i++;
+		}
+		System.out.println("Doctor not found!");
+		return -1;
+	}
+
+	/*
+	 * This method allows a qualification for a doctor to be added
+	 */
+	public void addQualification(){
+		System.out.println("What doctor do you want to add qualifications for? ");
+		input.nextLine();
+		String name = input.nextLine();
+		int a = 0; // Bug fix where it gives two lines and only one the second time around
+		int i = searchForDoctor(name);
+		if(i != -1){
+			String b = "y";
+			while (b.toLowerCase().equals("y")){
+				System.out.println("What is the type of degree?: ");
+				if (a != 0){ 
+					input.nextLine(); //Not needed first time around.
+				}
+				String degree = input.nextLine();
+				System.out.println("What is the name of the degree: ");
+				String nameOfDegree = input.nextLine();
+				System.out.println("What is the name of the college you graduated from: ");
+				String nameOfCollege = input.nextLine();
+				System.out.println("What was the year you graduated?: ");
+				int yearOfGraduation = input.nextInt();
+				System.out.println("Do you want to add another qualification y/n");
+				b = input.next();
+				Qualification qualification = new Qualification(degree, nameOfDegree, nameOfCollege, yearOfGraduation);
+				doctors.get(i).addQualification(qualification);
+				a++;
+			}
+		}
+		else{
+			System.out.println("Doctor not found!");
+		}
+	}
+
+	/*
+	 * This method allows a double to be returned to two decimal places
+	 */
+	private double toTwoDecimalPlaces(double num)
+	{
+		return (int) (num *100 ) /100.0; 
+	}
+
+	/*
+	 
+	 * The toString for all the registration fees
+	 */
 	public String toString() {
 		return "MedicalCouncil" + "\n" + "Total Amount owed: " + 
 				+ totalRegistrationOwed() + "\n" + "Total Intern Registration Owed: " 
@@ -397,6 +645,116 @@ public class MedicalCouncil {
 				+ totalSpecialistRegistrationOwed() + "\n" + "All Doctors"
 				+ allDoctors();
 	}
-	
-	
-}
+
+
+	// I'm not sure if this is needed here but it allows complaints to be added even though they are not asked for in the spec.
+
+	/*
+	 * This method allows a complaint to be added and checks if the complaint is in already. If it is, it gives it the next value up.
+	 */
+	public void addComplaint(){
+		int i= -1;
+		System.out.println("What Doctor do you want to add a complaint for");
+		input.nextLine();
+		String name = input.nextLine();
+		if(searchForDoctor(name) != -1){
+			String startingComplaint = "Open";
+			while(i == -1){
+				System.out.println("Assign the complaint an id: ");
+				try {
+					i = input.nextInt();
+				}
+				catch (Exception e){
+					System.out.println("Invalid Data");
+					input.nextLine();
+				}
+			}
+			Calendar c = new GregorianCalendar(); // Reference: http://stackoverflow.com/questions/9629636/get-todays-date-in-java
+			Date date = c.getTime(); // current time when it was added
+			Complaint complaint = new Complaint(i, date, startingComplaint);
+			doctors.get(searchForDoctor(name)).addComplaint(complaint);
+		}
+	}
+
+
+
+	/*
+	 * This allows for a complaints status to be updated.
+	 */
+	public void updateComplaintStatus(Complaint complaint, String status){
+		int option = -1;
+		while(option == -1){
+			System.out.println("What do you want to update the ComplaintStatus to?");
+			System.out.println("---------");    
+			System.out.println("  1)  Upheld");
+			System.out.println("  2)  Rejected");
+			System.out.println("  3)  Open");
+			try{
+				option = input.nextInt();
+				if(option > 3 || option < 1){
+					option = -1;
+				}
+			}
+			catch (Exception e){
+				System.out.println("Invalid Data");
+				input.nextLine();
+			}
+			if (option == 1){
+				status = "Upheld";
+				complaint.setResultOfComplaint(status);
+			}
+			else if(option == 2){
+				status = "Rejected";
+				complaint.setResultOfComplaint(status);
+			}
+			else if(option == 3){
+				status = "Open";
+				complaint.setResultOfComplaint(status);
+			}
+		}
+	}
+
+	/*
+	 * This sorts the complaints in order of id
+	 */
+	private void sortComplaints(){
+		for (int j=complaints.size()-1; j>= 0; j--){
+			for (int i = 0; i< j; i++){
+				if (complaints.get(i).getComplaintId() > complaints.get(i+1).getComplaintId()){
+					Collections.swap(complaints, i, i+1);
+				}
+			}
+		}
+	}
+
+	/*
+	 * this returns a list of all the users complaints in order of id.
+	 */
+	public String getComplaints(){
+		sortComplaints();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); 
+		String str = "";
+		int i = 0;
+		for (Complaint complaint: complaints){
+			str += "\n" + "-------------------------" + "\n" + "Complaint Id: " + complaints.get(i).getComplaintId() + "\n" + "Complaint Date: "  + sdf.format(complaints.get(i).getComplaintDate().getTime()) + "\n" + "Result of Complaint: "
+					+ complaints.get(i).getResultOfComplaint() + "\n" + "-------------------------" + "\n";
+			i++;
+		}
+		return str;
+	}
+
+	/*
+	 * This allows a search for complaint by id.
+	 */
+	public	int	searchForComplaint(){
+		System.out.println("What is the complaint ID?");
+		int id = input.nextInt();
+		for (Complaint complaint: complaints){
+			if (id == complaint.getComplaintId()){
+				return complaint.getComplaintId();
+			}
+		}
+		return -1;
+	}
+}	
+
