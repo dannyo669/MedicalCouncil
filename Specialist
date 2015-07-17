@@ -4,7 +4,58 @@ import java.util.Calendar;
 import java.util.Date;
 
 /*
+ * This is a class that extends QualifiedDoctor and is used to set up Specialists.import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+/*
  * This is a class that extends QualifiedDoctor and is used to set up Specialists.
+ * @version 1
+ * @author Danny O'Leary
+ */
+
+public class Specialist extends QualifiedDoctor{
+
+	/*
+	 * Constructor for Interns
+	 */
+	public Specialist(String name, Calendar dateOfBirth, boolean male, String address, double registrationFees, int phoneNumber, 
+			boolean qualifiedInIreland, ArrayList<Complaint> complaints, ArrayList<Qualification> qualifications){
+		super(name, dateOfBirth, male, address, registrationFees, phoneNumber, qualifiedInIreland, complaints, qualifications);
+	}
+
+	/*
+	 * method needed from Doctor, abstract method. Currently returns registration fees. 
+	 */
+	public double calculateRegistrationFee() { //doesnt do anything
+		if (getQualifiedInIreland() == true){
+			setRegistrationFees(425);
+			return 425;
+		}
+		else{
+			setRegistrationFees(641);
+			return 641;
+		}
+	}
+
+
+	/*
+	 * toString that returns all the information of a Specialist
+	 */
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); 
+		return "Name Of Doctor: " + getName() + "\n" + "Date Of Birth: "
+		+ sdf.format(getDateOfBirth().getTime()) + "\n" + "Male or Female: " + getMaleOrFemale() + "\n"
+		+ "Address: " + getAddress() + "\n" + "Registration Fees: "
+		+ getRegistrationFees() + "\n" + "Phone Number: "
+		+ getPhoneNumber() + "\n" + "Qualified in Ireland:" + getQualifiedInIreland() + "\n" + "Complaints: " + getComplaints() +  "\n" + "Qualifications: " + getQualification() + "\n" +
+		"--------------------------------------------------------" + "\n";
+
+	}
+
+}
+
  * @version 1
  * @author Danny O'Leary
  */
