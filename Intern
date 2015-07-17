@@ -1,17 +1,41 @@
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
+/*
+ * This is a class that extends Doctor and is used to set up Interns.
+ * @version 1
+ * @author Danny O'Leary
+ */
 
 public class Intern extends Doctor {
 
-	
+	/*
+	 * Constructor for Interns
+	 */
 	public Intern(String name, Calendar dateOfBirth, boolean male, String address, double registrationFees, int phoneNumber){
 		super(name, dateOfBirth, male, address, registrationFees, phoneNumber);
 	}
 
-	public double calculateRegistrationFee() {
-        setRegistrationFees(310);
-        return 310;
+	/*
+	 * method needed from Doctor, abstract method. Currently returns registration fees. 
+	 */
+	public double calculateRegistrationFee() { // doesn't do anything
+		setRegistrationFees(310);
+		return 310;
 	}
-	
-	
+
+	/*
+	 * toString that returns all the information of an Intern
+	 */
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy"); 
+		return "Name Of Doctor: " + getName() + "\n" + "Date Of Birth: "
+		+ sdf.format(getDateOfBirth().getTime()) + "\n" + "Male or Female: " + getMaleOrFemale() + "\n"
+		+ "Address: " + getAddress() + "\n" + "Registration Fees: "
+		+ getRegistrationFees() + "\n" + "Phone Number: "
+		+ getPhoneNumber() + "\n" + "--------------------------------------------------------" + "\n";
+
+
+	}
 }
