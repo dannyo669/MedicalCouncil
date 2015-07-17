@@ -1,49 +1,126 @@
 
+/*
+ * This is a class that extends Qualifications for each doctor.
+ * @version 1
+ * @author Danny O'Leary
+ */
+
 public class Qualification {
 
 	private String typeOfDegree;
 	private String nameOfDegree;
 	private String nameOfCollege;
 	private int year;
-	
+
+	/*
+	 * Constructor for qualifications
+	 */
 	public Qualification(String typeOfDegree, String nameOfDegree, String nameOfCollege, int year){
-		this.typeOfDegree=typeOfDegree;
-		this.nameOfDegree=nameOfDegree;
-		this.nameOfCollege=nameOfCollege;
+
+		if (typeOfDegree.length() <= 35){
+			this.typeOfDegree=typeOfDegree;
+		}
+		else{
+			typeOfDegree = typeOfDegree.substring(0, 35);
+			this.typeOfDegree=typeOfDegree;
+		}
+
+		if (nameOfDegree.length() <= 35){
+			this.nameOfDegree=nameOfDegree;
+		}
+		else{
+			nameOfDegree = nameOfDegree.substring(0, 35);
+			this.nameOfDegree=nameOfDegree;
+		}
+
+		if (nameOfCollege.length() <= 35){
+			this.nameOfCollege=nameOfCollege;
+		}
+		else{
+			nameOfCollege = nameOfCollege.substring(0, 35);
+			this.nameOfCollege=nameOfCollege;
+		}
+
 		this.year=year;
 	}
 
+	/*
+	 * returns the type of degree
+	 */
 	public String getTypeOfDegree() {
 		return typeOfDegree;
 	}
 
+	/*
+	 * Sets the type of the degree
+	 * @param typeOfDegree the type of degree the doctor has
+	 */
 	public void setTypeOfDegree(String typeOfDegree) {
-		this.typeOfDegree = typeOfDegree;
+		if (typeOfDegree.length() <= 35){
+			this.typeOfDegree=typeOfDegree;
+		}
+		else{
+			typeOfDegree = typeOfDegree.substring(0, 35);
+			this.typeOfDegree=typeOfDegree;
+		}
 	}
 
+	/*
+	 * returns the name of the degree
+	 */
 	public String getNameOfDegree() {
 		return nameOfDegree;
 	}
 
+	/*
+	 * Sets the name of the degree
+	 * @param nameOfDegree the name of degree the doctor has
+	 */
 	public void setNameOfDegree(String nameOfDegree) {
-		this.nameOfDegree = nameOfDegree;
+		if (nameOfDegree.length() <= 35){
+			this.nameOfDegree=nameOfDegree;
+		}
+		else{
+			nameOfDegree = nameOfDegree.substring(0, 35);
+			this.nameOfDegree=nameOfDegree;
+		}
 	}
 
+	/*
+	 * returns the name of the college
+	 */
 	public String getNameOfCollege() {
 		return nameOfCollege;
 	}
 
+	/*
+	 * sets the name of the college
+	 * @param nameOfCollege the name of the college the doctor went to
+	 */
 	public void setNameOfCollege(String nameOfCollege) {
-		this.nameOfCollege = nameOfCollege;
+		if (nameOfCollege.length() <= 35){
+			this.nameOfCollege=nameOfCollege;
+		}
+		else{
+			nameOfCollege = nameOfCollege.substring(0, 35);
+			this.nameOfCollege=nameOfCollege;
+		}
 	}
 
+	/*
+	 * returns the year they graduated
+	 */
 	public int getYear() {
 		return year;
 	}
 
+	/*
+	 * sets the year they graduated
+	 * @param year the year they graduated
+	 */
 	public void setYear(int year) {
 		this.year = year;
 	}
-	
-	
+
+
 }
